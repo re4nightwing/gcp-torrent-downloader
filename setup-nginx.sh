@@ -17,6 +17,8 @@ sudo mkdir -p /var/www/downloads || error_exit "Failed to create /var/www/downlo
 sudo chown -R www-data:www-data /var/www/downloads
 sudo chmod -R 755 /var/www
 
+sudo touch /var/www/downloads/it-is-working.txt
+
 # Create a virtual host configuration for Nginx
 sudo tee /etc/nginx/sites-available/downloads <<EOF
 server {
@@ -44,7 +46,7 @@ sudo nginx -t || error_exit "Nginx test failed"
 sudo systemctl restart nginx || error_exit "Failed to start the nginx server."
 
 # Get the VM's IP address
-ip_address=curl ifconfig.me || error_exit "Failed to fetch the external IP address."
+ip_address=$(curl ifconfig.me) || error_exit "Failed to fetch the external IP address."
 
 # Print the IP address
 echo "Nginx server is running. Address: http://$ip_address/downloads"
