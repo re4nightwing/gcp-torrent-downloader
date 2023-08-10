@@ -1,11 +1,17 @@
 #!/bin/bash
 
+#error logger
+function error_exit {
+    echo "Error: $1"
+    exit 1
+}
+
 # Update package lists and install Nginx
-sudo apt update
-sudo apt install -y nginx transmission-cli
+sudo apt update || error_exit "Failed to update package lists."
+sudo apt install -y nginx transmission-cli curl wget || error_exit "Failed to install packages."
 
 # Create the /var/www/downloads directory
-sudo mkdir -p /var/www/downloads
+sudo mkdir -p /var/www/downloads || error_exit "Failed to create /var/www/downloads directory."
 
 # Set permissions for the directory
 sudo chown -R www-data:www-data /var/www/downloads
@@ -28,17 +34,17 @@ server {
 EOF
 
 # Enable the virtual host
-sudo rm /etc/nginx/sites-enabled/default
-sudo ln -s /etc/nginx/sites-available/downloads /etc/nginx/sites-enabled/
+sudo rm /etc/nginx/sites-enabled/default || error_exit "Failed to remove nginx default config file."
+sudo ln -s /etc/nginx/sites-available/downloads /etc/nginx/sites-enabled/ || error_exit "Failed to symantic link for the new config file."
 
 # Test Nginx configuration
-sudo nginx -t
+sudo nginx -t || error_exit "Nginx test failed"
 
 # Restart Nginx to apply changes
-sudo systemctl restart nginx
+sudo systemctl restart nginx || error_exit "Failed to start the nginx server."
 
 # Get the VM's IP address
-ip_address=curl ifconfig.me
+ip_address=curl ifconfig.me || error_exit "Failed to fetch the external IP address."
 
 # Print the IP address
 echo "Nginx server is running. Address: http://$ip_address/downloads"
