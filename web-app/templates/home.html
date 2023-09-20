@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>Get Torrent Stuff</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Mooli&display=swap");
+      body {
+        font-family: "Mooli", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Download These</h1>
+    <img src="{{url_for('static', filename='god.jpg')}}" alt="" style="width: 100px; height: auto;">
+    <sup>Limited time</sup>
+    <ul>
+      {% if context %}
+      {% for file_key, key_data in context.items() %}
+      <li>
+        <ul>
+          {% for col_key, col_value in key_data.items() %}
+          <li>{{col_value}}</li>
+          {% endfor %}
+          <li><b><a href="{{url}}/{{file_key}}" target="_blank">Download</a></b></li>
+        </ul>
+      </li>
+      {% endfor %}
+      {% else %}
+      <li>An error occurred.</li>
+      <li>{{error_msg}}</li>
+      {% endif %}
+    </ul>
+  </body>
+</html>

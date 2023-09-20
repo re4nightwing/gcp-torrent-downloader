@@ -58,8 +58,8 @@ sudo mv ./The-Game /var/www/downloads
 1. It is easier to download files when all files are zipped in to multiple zips. To do that use,
 
 ```
-zip -r -v -s <maximum zip size> <zip-name.zip> <directory/to/zip/>
-zip -r -v -s 10G The-Game.zip ./The-Game/
+zip -r -v -0 -s <maximum zip size> <zip-name.zip> <directory/to/zip/>
+zip -r -v -0 -s 10G The-Game.zip ./The-Game/ #will split the whole directory into 10GB sized zips.
 ```
 **Zipping is a cpu/memory heavy process. Use wisely. Will take a long time if the resources are low.**
 
